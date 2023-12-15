@@ -28,7 +28,7 @@ export const action = async (args: ActionFunctionArgs) => {
         return { message }
     }
 
-    return redirect('sign-in')
+    return redirect('/sign-in')
 
 }
 
