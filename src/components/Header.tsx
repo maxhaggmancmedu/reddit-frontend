@@ -9,7 +9,9 @@ export default function Header() {
 
   return (
     <div className={classes.header}>
-        <h1>Reddit</h1>
+        <Link to='/'>
+          <h1>Reddit</h1>
+        </Link>
         <div className={classes.headerActions}>
           {isAuthenticated ? 
           <>

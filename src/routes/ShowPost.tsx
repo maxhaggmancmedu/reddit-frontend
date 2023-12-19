@@ -1,6 +1,8 @@
 import { Link, LoaderFunctionArgs, useLoaderData } from "react-router-dom"
 import { Post } from "../types"
 import classes from './ShowPost.module.css'
+import CommentForm from "../components/CommentForm";
+import Vote from "../components/Vote";
 
 export const loader = async ({ params: { id } }: LoaderFunctionArgs) => {
     // const { params: { id } } = args
@@ -18,10 +20,12 @@ export const loader = async ({ params: { id } }: LoaderFunctionArgs) => {
 
 export default function ShowPost() {
   const post = useLoaderData() as Post;
-
+  // const commentsFetcher = useFetcher({ key: 'comment-form-' + post._id})
+  
   return (
     <>
       <div className={classes.post}>
+        <Vote post={post} />
         <div className={classes.postInfo}>
           { post.link ? (
             <Link to={post.link}>
@@ -38,6 +42,8 @@ export default function ShowPost() {
           )}
         </div>
       </div>
+      <CommentForm postId={post._id} />
+      {post.comments?.map(comment => (<p key={comment._id}>{comment.body} - {comment.author.userName}</p>))}
     </>
   );
 }
