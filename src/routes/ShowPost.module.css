@@ -4,6 +4,12 @@
     border: 2px solid black;
     margin-bottom: 20px;
     padding: 10px;
+    flex-direction: column;
+  }
+
+  .postVoteAndInfo {
+    display: flex;
+    align-items: center;
   }
   
   .vote {
@@ -19,6 +25,7 @@
   .post-info h2 {
     margin: 0;
   }
+
   
   .post-info p {
     margin: 5px 0;

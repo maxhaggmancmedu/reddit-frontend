@@ -1,0 +1,21 @@
+.vote {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-right: 10px;
+  }
+  
+.vote button {
+    display: block;
+    background-color: #747bff;
+}
+
+.vote button:hover {
+    opacity: .9;
+}
+
+@media (min-width: 600px) {
+    .vote {
+        gap: 4px;
+    }
+}

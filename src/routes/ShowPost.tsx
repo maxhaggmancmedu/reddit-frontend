@@ -3,6 +3,7 @@ import { Post } from "../types"
 import classes from './ShowPost.module.css'
 import CommentForm from "../components/CommentForm";
 import Vote from "../components/Vote";
+import CommentComponent from "../components/Comment";
 
 export const loader = async ({ params: { id } }: LoaderFunctionArgs) => {
     // const { params: { id } } = args
@@ -25,25 +26,27 @@ export default function ShowPost() {
   return (
     <>
       <div className={classes.post}>
-        <Vote post={post} />
-        <div className={classes.postInfo}>
-          { post.link ? (
-            <Link to={post.link}>
-              <h2>{post.title}<span className={classes.postUrl}>({post.link})</span></h2>
-            </Link>
-          ) : (
-            <h2>{post.title}</h2>
-          )}
-          <p>by {post.author.userName}</p>
+        <div className={classes.postVoteAndInfo}>
+          <Vote post={post} />
+          <div className={classes.postInfo}>
+            { post.link ? (
+              <Link to={post.link}>
+                <h2>{post.title}<span className={classes.postUrl}>({post.link})</span></h2>
+              </Link>
+            ) : (
+              <h2>{post.title}</h2>
+            )}
+            <p>by {post.author.userName}</p>
+          </div>
+
+        </div>
           { post.body && (
             <div className={classes.postBody}>
               <p>{post.body}</p>
             </div>
           )}
-        </div>
       </div>
       <CommentForm postId={post._id} />
-      {post.comments?.map(comment => (<p key={comment._id}>{comment.body} - {comment.author.userName}</p>))}
-    </>
+      { post.comments?.map(comment => <CommentComponent key={comment._id} comment={comment} />) }    </>
   );
 }

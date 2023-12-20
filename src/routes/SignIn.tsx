@@ -50,7 +50,7 @@ export default function Signin() {
                 <label htmlFor='password'>Password</label>
                 <input type='password' name='password' id='password' required />
             </div>
-            <div>
+            <div className={classes.formGroup}>
                 <button type='submit'>Sign in</button>
             </div>
         </Form>

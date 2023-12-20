@@ -54,7 +54,7 @@ export default function Signup() {
                 <label htmlFor='password_confirmation'>Password confirmation</label>
                 <input type='password' name='password_confirmation' id='password_confirmation' required />
             </div>
-            <div>
+            <div className={classes.formGroup}>
                 <button type='submit'>Create user</button>
             </div>
         </Form>

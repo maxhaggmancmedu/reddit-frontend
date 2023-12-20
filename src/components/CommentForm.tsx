@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, useFetcher } from "react-router-dom"
-import classes from './Comment.module.css'
+import classes from './CommentForm.module.css'
 import auth from "../lib/auth"
 import { Post } from "../types"
 import { useRef } from "react"
