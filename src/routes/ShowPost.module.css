@@ -1,15 +1,18 @@
 .post {
     display: flex;
-    align-items: start;
     border: 2px solid black;
     margin-bottom: 20px;
     padding: 10px;
     flex-direction: column;
   }
 
+  .postVoteAndInfoContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .postVoteAndInfo {
     display: flex;
-    align-items: center;
   }
   
   .vote {

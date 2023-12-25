@@ -2,6 +2,12 @@
     border-top: 1px solid #ccc;
     padding: 10px 0;
   }
+
+.commentInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
   
   .comment:first-of-type {
     border-top: 0;
@@ -9,4 +15,9 @@
   
   .comment-author {
     font-weight: bold;
+    margin: 0;
   }
+
+.commentBody {
+  margin: 4px 0;
+}
