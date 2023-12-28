@@ -5,6 +5,8 @@ import CommentForm from "../components/CommentForm";
 import Vote from "../components/Vote";
 import CommentComponent from "../components/Comment";
 import auth from "../lib/auth";
+import EditPost from "../components/EditPost";
+import { useState } from "react";
 
 export const loader = async ({ params: { id } }: LoaderFunctionArgs) => {
 
@@ -40,7 +42,7 @@ export const action = async ({ params: { id }}: ActionFunctionArgs) => {
 export default function ShowPost() {
   const post = useLoaderData() as Post;
   const error = useActionData() as ActionData;
-  // const commentsFetcher = useFetcher({ key: 'comment-form-' + post._id})
+  const [isOpen, setIsOpen] = useState(false)
   
   return (
     <>
@@ -49,23 +51,30 @@ export default function ShowPost() {
           <div className={classes.postVoteAndInfo}>
             <Vote post={post} />
             <div className={classes.postInfo}>
-              { post.link ? (
-                <Link to={post.link}>
-                  <h2>{post.title}<span className={classes.postUrl}>({post.link})</span></h2>
-                </Link>
-              ) : (
-                <h2>{post.title}</h2>
-              )}
+                { post.link ? (
+                <div className={classes.titleAndLink}>
+                  <h2>{post.title}</h2>
+                  <Link to={post.link}>
+                    <p className={classes.postUrl}>({post.link})</p>
+                  </Link>
+                </div>
+                ) : (
+                  <h2>{post.title}</h2>
+                )}
+
               <p>by {post.author.userName}</p>
             </div>
-
           </div>
-          <Form method="delete" action={`/posts/${post._id}/delete`}>
-            {error && <p><b>Error:</b> {error.message}</p>}
-            <input type="hidden" name="delete-post" id='delete-post' />
-            <button type="submit">Delete post</button>
-          </Form>
-
+          {isOpen && <div onClick={() => setIsOpen(false)} className={classes.backgroundClick}></div>}
+          {isOpen && <EditPost post={post} setIsOpen={setIsOpen} />}
+          <div className={classes.postChanges}>
+            <button className={classes.button} onClick={() => setIsOpen(prev => !prev)}>Edit post</button>
+            <Form method="delete" action={`/posts/${post._id}/delete`}>
+              {error && <p><b>Error:</b> {error.message}</p>}
+              <input type="hidden" name="delete-post" id='delete-post' />
+              <button className={classes.button} type="submit">Delete post</button>
+            </Form>
+          </div>
         </div>
           { post.body && (
             <div className={classes.postBody}>

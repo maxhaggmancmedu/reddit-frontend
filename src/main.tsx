@@ -13,6 +13,8 @@ import ShowPost, { loader as showPostLoader, action as deletePostAction} from '.
 import { action as createCommentAction } from './components/CommentForm.tsx'
 import { action as voteAction } from './components/Vote.tsx'
 import { action as deleteCommentAction } from './components/Comment.tsx'
+import { action as editPostAction } from './components/EditPost.tsx'
+import { action as editCommentAction } from './components/EditComment.tsx'
 
 const router = createBrowserRouter([
   {
@@ -69,6 +71,14 @@ const router = createBrowserRouter([
           {
             path: '/posts/:id/delete',
             action: deletePostAction,
+          },
+          {
+            path: '/posts/:id/edit',
+            action: editPostAction
+          },
+          {
+            path: '/posts/:postId/comments/:commentId/edit',
+            action: editCommentAction,
           }
         ]
       },
