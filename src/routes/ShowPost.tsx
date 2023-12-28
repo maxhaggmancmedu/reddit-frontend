@@ -66,7 +66,7 @@ export default function ShowPost() {
             </div>
           </div>
           {isOpen && <div onClick={() => setIsOpen(false)} className={classes.backgroundClick}></div>}
-          {isOpen && <EditPost post={post} setIsOpen={setIsOpen} />}
+          {isOpen && <EditPost post={post} />}
           <div className={classes.postChanges}>
             <button className={classes.button} onClick={() => setIsOpen(prev => !prev)}>Edit post</button>
             <Form method="delete" action={`/posts/${post._id}/delete`}>

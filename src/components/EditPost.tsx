@@ -27,7 +27,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     return redirect('/posts/' + id)
 }
 
-export default function EditPost({ post, setIsOpen }: { post: Post, setIsOpen: (val: boolean) => void }) {
+export default function EditPost({ post }: { post: Post }) {
     const error = useActionData() as ActionData;
 
     return (
