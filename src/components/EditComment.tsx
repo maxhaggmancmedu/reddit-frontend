@@ -36,8 +36,10 @@ export default function EditComment({ comment, postId }: {comment: Comment, post
         textRef.current.value = ''
     }
 
+    const height = window.scrollY + 100;
+
     return (
-        <fetcher.Form method="PUT" className={classes.form} action={`/posts/${postId}/comments/${comment._id}/edit`}>
+        <fetcher.Form method="PUT" style={{top: height }} className={classes.form} action={`/posts/${postId}/comments/${comment._id}/edit`}>
             <div className={classes.formGroup}>
                 <textarea ref={textRef} name="body" placeholder={comment.body} id="body"required />
             </div>
