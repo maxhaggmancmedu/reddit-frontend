@@ -1,5 +1,5 @@
-import { ActionFunctionArgs, Form, redirect, useActionData } from 'react-router-dom'
-import { ActionData, Comment } from '../types'
+import { ActionFunctionArgs, Form, redirect, useActionData, useLoaderData } from 'react-router-dom'
+import { ActionData, Comment, Profile } from '../types'
 import classes from './Comment.module.css'
 import auth from '../lib/auth'
 import { useState } from 'react'
@@ -25,24 +25,28 @@ export const action = async (args: ActionFunctionArgs) => {
 }
 
 export default function CommentComponent({ comment, postId }: {comment: Comment, postId: string}) {
+  const { profile } = useLoaderData() as { profile: Profile };
   const error = useActionData() as ActionData;
   const [isOpen, setIsOpen] = useState(false)
+  const isAuthor = comment.author.userName === profile.userName
   return (
     <div className={classes.comment}>
       <div className={classes.commentInfo}>
         <p className={classes.commentAuthor}>{comment.author.userName}</p>
         <div className={classes.buttons}>
-          {isOpen && <div onClick={() => setIsOpen(false)} className={classes.backgroundClick} />}
-          {isOpen && <EditComment postId={postId} comment={comment} />}
-          <button className={classes.button} onClick={() => setIsOpen(true)}>Edit comment</button>
-          <Form method="delete" action={`/posts/${postId}/comments/${comment._id}`}>
-              {error && <p><b>Error:</b> {error.message}</p>}
-              <input type="hidden" name="delete-comment" id='delete-comment' />
-              <button className={classes.button} type="submit">Delete comment</button>
-            </Form>
-
+          {isAuthor && 
+            <>
+              {isOpen && <div onClick={() => setIsOpen(false)} className={classes.backgroundClick} />}
+              {isOpen && <EditComment postId={postId} comment={comment} />}
+              <button className={classes.button} onClick={() => setIsOpen(true)}>Edit comment</button>
+              <Form method="delete" action={`/posts/${postId}/comments/${comment._id}`}>
+                {error && <p><b>Error:</b> {error.message}</p>}
+                <input type="hidden" name="delete-comment" id='delete-comment' />
+                <button className={classes.button} type="submit">Delete comment</button>
+              </Form>
+            </>
+          }
         </div>
-
       </div>
       <p className={classes.commentBody}>{comment.body}</p>
     </div>

@@ -23,3 +23,7 @@ export interface Post {
     comments?: Comment[],
     score: number
   }
+  
+export interface Profile {
+    userName: string
+}

@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, Form, Link, LoaderFunctionArgs, redirect, useActionData, useLoaderData } from "react-router-dom"
-import { ActionData, Post } from "../types"
+import { ActionData, Post, Profile } from "../types"
 import classes from './ShowPost.module.css'
 import CommentForm from "../components/CommentForm";
 import Vote from "../components/Vote";
@@ -10,15 +10,24 @@ import { useState } from "react";
 
 export const loader = async ({ params: { id } }: LoaderFunctionArgs) => {
 
-    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/posts/' + id, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+  const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/posts/' + id, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
-  const posts = await response.json();
+  const post: Post = await response.json();
 
-  return posts;
+  const profileResponse = await fetch(import.meta.env.VITE_BACKEND_URL + '/profile', {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${auth.getJWT()}`
+    },
+  });
+
+  const profile: Profile = await profileResponse.json();
+
+  return { post, profile };
 };
 
 export const action = async ({ params: { id }}: ActionFunctionArgs) => {
@@ -40,10 +49,10 @@ export const action = async ({ params: { id }}: ActionFunctionArgs) => {
 }
 
 export default function ShowPost() {
-  const post = useLoaderData() as Post;
+  const { post, profile } = useLoaderData() as { post: Post; profile: Profile };
   const error = useActionData() as ActionData;
   const [isOpen, setIsOpen] = useState(false)
-  
+  const isAuthor = post.author.userName === profile.userName
   return (
     <>
       <div className={classes.post}>
@@ -65,16 +74,20 @@ export default function ShowPost() {
               <p>by {post.author.userName}</p>
             </div>
           </div>
-          {isOpen && <div onClick={() => setIsOpen(false)} className={classes.backgroundClick}></div>}
-          {isOpen && <EditPost post={post} />}
-          <div className={classes.postChanges}>
-            <button className={classes.button} onClick={() => setIsOpen(prev => !prev)}>Edit post</button>
-            <Form method="delete" action={`/posts/${post._id}/delete`}>
-              {error && <p><b>Error:</b> {error.message}</p>}
-              <input type="hidden" name="delete-post" id='delete-post' />
-              <button className={classes.button} type="submit">Delete post</button>
-            </Form>
-          </div>
+          {isAuthor && 
+            <>
+              {isOpen && <div onClick={() => setIsOpen(false)} className={classes.backgroundClick}></div>}
+              {isOpen && <EditPost post={post} />}
+              <div className={classes.postChanges}>
+                <button className={classes.button} onClick={() => setIsOpen(prev => !prev)}>Edit post</button>
+                <Form method="delete" action={`/posts/${post._id}/delete`}>
+                  {error && <p><b>Error:</b> {error.message}</p>}
+                  <input type="hidden" name="delete-post" id='delete-post' />
+                  <button className={classes.button} type="submit">Delete post</button>
+                </Form>
+              </div>
+            </>
+          }
         </div>
           { post.body && (
             <div className={classes.postBody}>
